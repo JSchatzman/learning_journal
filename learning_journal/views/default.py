@@ -1,5 +1,6 @@
 import os
 from pyramid.view import view_config
+from datetime import date as Date
 from pyramid.httpexceptions import HTTPFound
 from ..models import Entry
 
@@ -26,7 +27,17 @@ def detail_view(request):
 @view_config(route_name='create', renderer='templates/new_entry.jinja2')
 def create_view(request):
     """Create new view handler."""
-    return {}
+    if request.method == "POST":
+        today = Date.today()
+        title = request.POST['title']
+        body = request.POST['body']
+        creation_date = "{}-{}-{}".format(today.year, today.month, today.day)
+        entry = Entry(title=title, body=body, creation_date=creation_date)
+        request.dbsession.add(entry)
+        return HTTPFound(location=request.route_url('home'))
+    if request.method == "GET":
+        today = Date.today()
+        return {"creation_date": "{}-{}-{}".format(today.year, today.month, today.day)}
 
 
 @view_config(route_name='update', renderer='templates/update.jinja2')
@@ -39,5 +50,5 @@ def update_view(request):
         title = request.POST['title']
         body = request.POST['body']
         entry = Entry(title=title, body=body, creation_date=entry.creation_date)
-        #request.dbsession.add(entry) Not adding data for now
+        request.dbsession.add(entry)
         return HTTPFound(location=request.route_url('home'))
