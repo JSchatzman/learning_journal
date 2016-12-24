@@ -1,90 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Jordan Schatzman Learning Blog">
-    <meta name="author" content="Jordan Schatzman">
-
-    <title>Jordan Schatzman - Learning Blog</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="../static/bootstrap.min.css" rel="stylesheet">
-
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-
-</head>
-
-<body>
-    <div></div>
-    <!-- Page Content -->
-    <div class="container">
-
-        <div class="row">
-
-            <!-- Blog Entries Column -->
-            <div class="col-md-8">
-
-                <h1 class="page-header">
-                    <a href="/">Home</a>
-                    <br>
-                    Learning Blog
-
-                </h1>
-
-                <h2>
-                    <a href="/journal/1">Day 10 - Whiteboard Review</a>
-                </h2>
-                <p class="lead">
-                    by Jordan Schatzman
-                </p>
-                <p>Posted on August 28, 2013 at 10:00 PM</p>
-                <br/>
-
-                <!-- Second Blog Post -->
-                <h2>
-                    <a href="/journal/2">Day 9 - Concurrency and Queue</a>
-                </h2>
-                <p class="lead">
-                    by Jordan Schatzman
-                </p>
-                <p>Posted on August 28, 2013 at 10:45 PM</p>
-                <br/>
-
-                <!-- Third Blog Post -->
-                <h2>
-                    <a href="/journal/3">Day 8 - Class/Static Methods and Doubly Linked Lists</a>
-                </h2>
-                <p class="lead">
-                    by Jordan Schatzman
-                </p>
-                <p>Posted on August 28, 2013 at 10:45 PM</p>
-                <br/>
-
-                <!-- Fourth Blog Post -->
-                <h2>
-                    <a href="/journal/4">Day 7 - HTTP and Stacks</a>
-                </h2>
-                <p class="lead">
-                    by Jordan Schatzman
-                </p>
-                <p>Posted on August 28, 2013 at 10:45 PM</p>                
-                <br/>
-
-                <!-- Pager -->
-
-            </div>
-
-
-</body>
-
-</html>
+{% extends "layout.jinja2" %}
+{% block title %}
+My Learning Journal
+{% endblock %}
+{% block body %}
+{% if entries %}
+    {% for entry in entries %}
+        <h2>
+            <a href = "{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+        </h2>
+        <h3>
+        </h3>  
+        <p class = "lead">by Jordan Schatzman</p>
+        <p>Posted on {{entry.creation_date}}</p>
+        <br/>
+    {% endfor %}
+{% else %}
+    <p>This journal is empty</p>
+{% endif %}
+{% endblock %}
