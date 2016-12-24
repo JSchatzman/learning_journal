@@ -39,5 +39,5 @@ def update_view(request):
         title = request.POST['title']
         body = request.POST['body']
         entry = Entry(title=title, body=body, creation_date=entry.creation_date)
-        request.dbsession.add(entry)
+        #request.dbsession.add(entry) Not adding data for now
         return HTTPFound(location=request.route_url('home'))
