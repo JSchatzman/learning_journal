@@ -5,6 +5,7 @@ from pyramid import testing
 
 
 def dummy_request(dbsession):
+    """Create test dummy session."""
     return testing.DummyRequest(dbsession=dbsession)
 
 
