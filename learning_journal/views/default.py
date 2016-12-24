@@ -43,12 +43,15 @@ def create_view(request):
 @view_config(route_name='update', renderer='templates/update.jinja2')
 def update_view(request):
     """Update/edit view handler."""
-    entry = request.dbsession.query(Entry).filter_by(id=request.matchdict['id']).first()
     if request.method == 'GET':
+        entry = request.dbsession.query(Entry).filter_by(id=request.matchdict['id']).first()
         return {'entries': entry}
     elif request.method == 'POST':
-        title = request.POST['title']
-        body = request.POST['body']
-        entry = Entry(title=title, body=body, creation_date=entry.creation_date)
-        request.dbsession.add(entry)
+        entry = request.dbsession.query(Entry).get(request.matchdict['id'])
+        entry.title = request.POST['title']
+        entry.body = request.POST['body']
+
+        #entry = Entry(title=title, body=body, creation_date=entry.creation_date)
+
+     #  request.dbsession.add(entry)
         return HTTPFound(location=request.route_url('home'))
