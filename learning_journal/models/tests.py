@@ -5,6 +5,7 @@ from .mymodel import Base
 from .mymodel import Entry
 
 
+# ========== Unit Tests============
 
 @pytest.fixture(scope="session")
 def configuration(request):
@@ -60,8 +61,8 @@ def test_entry_gets_added(db_session):
     assert db_session.query(Entry).count() == 4
 
 
-def test_entry_attributes_are_correct(db_session):
-    """Test that entries are added to session."""
+def test_entry_attributes(db_session):
+    """Test that new attributes are entered correctly."""
     entry1 = Entry(title='test_title1', body='Testing123', creation_date='test_date1')
     db_session.add(entry1)
     test_row = db_session.query(Entry).first()

@@ -14,6 +14,8 @@ def testapp():
     return TestApp(app)
 
 
+# =============Functional Tests===============
+
 def test_layout_root(testapp):
     """Test that the contents of the root page contain expected text."""
     response = testapp.get('/', status=200)
