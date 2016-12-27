@@ -1,66 +1,64 @@
-import unittest
-import transaction
+"""Test my learning journal."""
 
+import pytest
 from pyramid import testing
 
 
-def dummy_request(dbsession):
-    """Create test dummy session."""
-    return testing.DummyRequest(dbsession=dbsession)
+@pytest.fixture()
+def testapp():
+    """Create an instance of our app for testing."""
+    from learning_journal_basic import main
+    app = main({})
+    from webtest import TestApp
+    return TestApp(app)
 
 
-class BaseTest(unittest.TestCase):
-    def setUp(self):
-        self.config = testing.setUp(settings={
-            'sqlalchemy.url': 'sqlite:///:memory:'
-        })
-        self.config.include('.models')
-        settings = self.config.get_settings()
-
-        from .models import (
-            get_engine,
-            get_session_factory,
-            get_tm_session,
-            )
-
-        self.engine = get_engine(settings)
-        session_factory = get_session_factory(self.engine)
-
-        self.session = get_tm_session(session_factory, transaction.manager)
-
-    def init_database(self):
-        from .models.meta import Base
-        Base.metadata.create_all(self.engine)
-
-    def tearDown(self):
-        from .models.meta import Base
-
-        testing.tearDown()
-        transaction.abort()
-        Base.metadata.drop_all(self.engine)
+def test_layout_root(testapp):
+    """Test that the contents of the root page contain expected text."""
+    response = testapp.get('/', status=200)
+    html = response.html
+    assert 'Learning Blog' in html.find("h1").text
 
 
-class TestMyViewSuccessCondition(BaseTest):
-
-    def setUp(self):
-        super(TestMyViewSuccessCondition, self).setUp()
-        self.init_database()
-
-        from .models import MyModel
-
-        model = MyModel(name='one', value=55)
-        self.session.add(model)
-
-    def test_passing_view(self):
-        from .views.default import my_view
-        info = my_view(dummy_request(self.session))
-        self.assertEqual(info['one'].name, 'one')
-        self.assertEqual(info['project'], 'learning_journal')
+def test_update_page_renders_file_data(testapp):
+    """Ensure a detail pages exists."""
+    response = testapp.get('/journal/0', status=200)
+    assert 'lecture was difficult' in str(response.html)
 
 
-class TestMyViewFailureCondition(BaseTest):
+def test_multiple_edit_entry_page_exists(testapp):
+    """Test that multiple journal pages exist."""
+    response = testapp.get("/journal/2/edit-entry", status=200)
+    html = response.html
+    assert 'Submit' in str(response.html)
 
-    def test_failing_view(self):
-        from .views.default import my_view
-        info = my_view(dummy_request(self.session))
-        self.assertEqual(info.status_int, 500)
+
+def test_create_new_page_exists(testapp):
+    """Test that the create new page exists."""
+    response = testapp.get("/journal/new-entry", status=200)
+    assert 'New Journal' in str(response.html)
+
+
+def test_for_home_link_in_detail(testapp):
+    """Test home page link exists in detail page."""
+    response = testapp.get('/journal/0', status=200)
+    html = response.html
+    """ There should be one link that is not a link to specific article."""
+    assert '<a href="/">Home</a>' in map(str, html.findAll("a"))
+
+
+def test_for_home_link_in_update(testapp):
+    """Test home page link exists in detail page."""
+    response = testapp.get('/journal/1/edit-entry', status=200)
+    html = response.html
+    """ There should be one link that is not a link to specific article."""
+    assert '<a href="/">Home</a>' in map(str, html.findAll("a"))
+
+
+def test_for_home_link_in_new(testapp):
+    """Test home page link exists in create new page page."""
+    response = testapp.get('/journal/new-entry', status=200)
+    html = response.html
+    """ There should be one link that is not a link to specific article."""
+    assert '<a href="/">Home</a>' in map(str, html.findAll("a"))
+
