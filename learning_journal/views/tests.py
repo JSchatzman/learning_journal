@@ -2,6 +2,7 @@
 
 import pytest
 from pyramid import testing
+import sys
 
 
 @pytest.fixture()
@@ -61,4 +62,3 @@ def test_for_home_link_in_new(testapp):
     html = response.html
     """ There should be one link that is not a link to specific article."""
     assert '<a href="/">Home</a>' in map(str, html.findAll("a"))
-
