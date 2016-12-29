@@ -8,7 +8,7 @@ import sys
 @pytest.fixture()
 def testapp():
     """Create an instance of our app for testing."""
-    from learning_journal_basic import main
+    from learning_journal import main
     app = main({})
     from webtest import TestApp
     return TestApp(app)
@@ -64,3 +64,5 @@ def test_for_home_link_in_new(testapp):
     html = response.html
     """ There should be one link that is not a link to specific article."""
     assert '<a href="/">Home</a>' in map(str, html.findAll("a"))
+
+print (sys.path)
