@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Jordan Schatzman Learning Blog">
+    <meta name="author" content="Jordan Schatzman">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="../static/bootstrap.min.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h1 class="page-header">
+                    <a href="/">Home</a>
+                    <br>
+                    Learning Blog
+                </h1>
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>    
+</body>
+</html>

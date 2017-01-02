@@ -1,0 +1,16 @@
+
+{% extends "templates/layout.jinja2" %}
+{% block title %}
+Entry Detail
+{% endblock %}
+{% block body %}
+<h2>
+    {{ entries.title }}
+</h2>
+<br>
+<h3>
+    <a href="{{ request.route_url('update', id=entries.id) }}">Edit</a>
+</h3>
+<p class="lead">by Jordan Schatzman</p>
+<p>{{entries.body}}</p>
+{% endblock %}
