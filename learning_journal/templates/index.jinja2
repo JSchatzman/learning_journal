@@ -1,0 +1,23 @@
+
+{% extends "layout.jinja2" %}
+{% block title %}
+My Learning Journal
+{% endblock %}
+{% block body %}
+<h3>
+    <a href="journal/new-entry">Add New Entry</a>
+{% if entries %}
+    {% for entry in entries %}
+        <h2>
+            <a href = "{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
+        </h2>
+        <h3>
+        </h3>  
+        <p class = "lead">by Jordan Schatzman</p>
+        <p>Posted on {{entry.creation_date}}</p>
+        <br/>
+    {% endfor %}
+{% else %}
+    <p>This journal is empty</p>
+{% endif %}
+{% endblock %}
