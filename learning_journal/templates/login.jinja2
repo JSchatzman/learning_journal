@@ -1,0 +1,21 @@
+
+{% extends "layout.jinja2" %}
+    {% block title %}
+        Edit Entry
+    {% endblock %}
+    {% block body %}
+    <div class="well">
+        <a href="/">Home</a>
+        <h4>Login:</h4>
+        <form role="form" method="POST">
+            <div class="form-group">
+                <p>UserName</p>
+                <input class="form-control" name="username"></input>
+                <br>
+                <pPassword<p>
+                <textarea class="form-control" name="Password" rows="10"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    {% endblock %}

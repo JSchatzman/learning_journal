@@ -3,6 +3,9 @@ from pyramid.view import view_config
 from datetime import date as Date
 from pyramid.httpexceptions import HTTPFound
 from ..models import Entry
+from learning_journal.security import check_credentials
+from pyramid.security import remember, forget
+from pyramid.security import NO_PERMISSION_REQUIRED
 
 THIS_DIR = os.path.dirname(__file__)
 
@@ -50,8 +53,20 @@ def update_view(request):
         entry = request.dbsession.query(Entry).get(request.matchdict['id'])
         entry.title = request.POST['title']
         entry.body = request.POST['body']
-
-        #entry = Entry(title=title, body=body, creation_date=entry.creation_date)
-
-     #  request.dbsession.add(entry)
         return HTTPFound(location=request.route_url('home'))
+
+@view_config(route_name='login',renderer='../templates/login.jinja2', permission=NO_PERMISSION_REQUIRED)
+def login_view(request):
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+        if check_credentials(username, password):
+            auth_head = remember(request, username)
+            return HTTPFound(location=request.route_url('home'))
+    return {} 
+
+
+@view_config(route_name='logout')
+def logout(request):
+    headers = forget(request)
+    return HTTPFound(request.route_url('home'), headers=headers)
