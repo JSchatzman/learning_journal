@@ -11,7 +11,10 @@ class MyRoot(object):
         self.request = request
 
     __acl__ = [
-        (Allow, Authenticated, 'add'),
+        (Allow, Authenticated, 'edit'),
+        (Allow, Authenticated, 'create'),
+        (Allow, Everyone, 'view')
+
     ]
 
 
@@ -20,20 +23,11 @@ def check_credentials(username, password):
         if username == os.environ['AUTH_USERNAME']:
             return pwd_context.verify(password, os.environ['AUTH_PASSWORD'])
     return False
-    # stored_username = os.environ.get('AUTH_USERNAME', '')
-    # stored_password = os.environ.get('AUTH_PASSWORD', '')
-    # is_authenticated = False
-    # if stored_username and stored_password:
-    #     if username == stored_username:
-    #         if password == stored_password:
-    #             is_authenticated = True
-    # return is_authenticated
-
 
 
 def includeme(config):
     """Pyramid security configuration.."""
-    auth_secret = os.environ.get('AUTH_SECRET', 'itsaseekrit')
+    auth_secret = os.environ.get('AUTH_SECRET', 'snakesforall')
     authn_policy = AuthTktAuthenticationPolicy(
         secret=auth_secret,
         hashalg='sha512')

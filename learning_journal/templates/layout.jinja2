@@ -19,6 +19,13 @@
                     <a href="/">Home</a>
                     <br>
                     Learning Blog
+                    <h3>
+                        {% if request.authenticated_userid == "jordan" %}
+                            <a href="/logout">Log Out</a>
+                        {% else %}
+                         <a href="/login">Log In</a>
+                        {% endif %}
+                    </h3>
                 </h1>
                 {% block body %}{% endblock %}
             </div>

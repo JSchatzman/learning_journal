@@ -27,7 +27,7 @@ def detail_view(request):
     return {'entries': entry}
 
 
-@view_config(route_name='create', renderer='templates/new_entry.jinja2')
+@view_config(route_name='create', renderer='templates/new_entry.jinja2', permission='create')
 def create_view(request):
     """Create new view handler."""
     if request.method == "POST":
@@ -43,7 +43,7 @@ def create_view(request):
         return {"creation_date": "{}-{}-{}".format(today.year, today.month, today.day)}
 
 
-@view_config(route_name='update', renderer='templates/update.jinja2')
+@view_config(route_name='update', renderer='templates/update.jinja2', permission='edit')
 def update_view(request):
     """Update/edit view handler."""
     if request.method == 'GET':
@@ -55,6 +55,7 @@ def update_view(request):
         entry.body = request.POST['body']
         return HTTPFound(location=request.route_url('home'))
 
+
 @view_config(route_name='login',renderer='../templates/login.jinja2', permission=NO_PERMISSION_REQUIRED)
 def login_view(request):
     if request.POST:
@@ -62,7 +63,8 @@ def login_view(request):
         password = request.POST['password']
         if check_credentials(username, password):
             auth_head = remember(request, username)
-            return HTTPFound(location=request.route_url('home'))
+            return HTTPFound(location=request.route_url('home'),
+                             headers=auth_head)
     return {} 
 
 
