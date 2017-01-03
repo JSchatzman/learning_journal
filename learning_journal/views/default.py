@@ -10,7 +10,7 @@ from pyramid.security import NO_PERMISSION_REQUIRED
 THIS_DIR = os.path.dirname(__file__)
 
 
-@view_config(route_name='home', renderer='templates/index.jinja2')
+@view_config(route_name='home', renderer='templates/index.jinja2', require_csrf=False)
 def home_view(request):
     """Home view handler."""
     entries = request.dbsession.query(Entry).order_by(-Entry.id).all()

@@ -4,9 +4,11 @@
         Edit Entry
     {% endblock %}
     {% block body %}
+    <input type="hidden" name="csrf_token" value="{{ request.session.get_csrf_token() }}" />
     <div class="well">
         <h4>New Journal Entry:</h4>
         <form role="form" method="POST">
+            <input type="hidden" name="csrf_token" value="{{ request.session.get_csrf_token() }}" />
             <div class="form-group">
                 <p>Title</p>
                 <input class="form-control" name="title"></input>
