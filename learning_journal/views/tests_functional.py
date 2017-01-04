@@ -9,7 +9,7 @@ import sys
 def testapp():
     """Create an instance of our app for testing."""
     from learning_journal import main
-    app = main({})
+    app = main({**{"sqlalchemy.url": 'sqlite:///:memory:'}}, **{"sqlalchemy.url": 'sqlite:///%(here)s/learning_journal.sqlite'})
     from webtest import TestApp
     return TestApp(app)
 
@@ -64,5 +64,3 @@ def test_for_home_link_in_new(testapp):
     html = response.html
     """ There should be one link that is not a link to specific article."""
     assert '<a href="/">Home</a>' in map(str, html.findAll("a"))
-
-print (sys.path)
