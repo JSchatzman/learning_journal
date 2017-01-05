@@ -1,12 +1,14 @@
 import pytest
 import transaction
-import sys
 from pyramid import testing
-from .mymodel import Base
-from .mymodel import Entry
+from learning_journal.models.mymodel import Entry
+from learning_journal.models.meta import Base
+import sys
+
 
 
 # ========== Unit Tests============
+
 
 @pytest.fixture(scope="session")
 def configuration(request):
@@ -22,7 +24,7 @@ def configuration(request):
     config = testing.setUp(settings={
         'sqlalchemy.url': 'sqlite:///:memory:'
     })
-    config.include("..models")
+    config.include("learning_journal.models")
 
     def teardown():
         testing.tearDown()
@@ -70,24 +72,31 @@ def test_entry_attributes(db_session):
     assert test_row.body == 'Testing123'
 
 
-def test_entry_editing(db_session):
-    """Test that edited entry is actually edited."""
-    entry = Entry(title='test_title1', body='test_body1', creation_date='test_date1')
-    db_session.add(entry)
-    test_row = db_session.query(Entry).get(1)
-    test_row.body = 'test_body'
-    assert test_row.body == 'test_body'
+# =============Functional Tests===============
+
 
 @pytest.fixture()
 def testapp():
     """Create an instance of our app for testing."""
-    from learning_journal import main
-    app = main({})
+    from pyramid.config import Configurator
+    from learning_journal.scripts.initializedb import ENTRIES
+    def main(global_config, **settings):
+        """ This function returns a Pyramid WSGI application.
+        """
+        config = Configurator(settings=settings)
+        config.include('pyramid_jinja2')
+        config.include('learning_journal.models')
+        config.include('learning_journal.routes')
+        config.scan()
+        return config.make_wsgi_app()
+    app = main({}, **{"sqlalchemy.url": 'sqlite:///:memory:'})
+    SessionFactory = app.registry["dbsession_factory"]
+    session = SessionFactory()
+    engine = session.bind
+    Base.metadata.create_all(engine)
     from webtest import TestApp
     return TestApp(app)
 
-
-# =============Functional Tests===============
 
 def test_layout_root(testapp):
     """Test that the contents of the root page contain expected text."""
@@ -99,7 +108,7 @@ def test_layout_root(testapp):
 def test_update_page_renders_file_data(testapp):
     """Ensure a detail pages exists."""
     response = testapp.get('/journal/1', status=200)
-    assert 'lecture was difficult' in str(response.html)
+    assert 'Jordan Schatzman' in str(response.html)
 
 
 def test_multiple_edit_entry_page_exists(testapp):
@@ -137,4 +146,3 @@ def test_for_home_link_in_new(testapp):
     html = response.html
     """ There should be one link that is not a link to specific article."""
     assert '<a href="/">Home</a>' in map(str, html.findAll("a"))
-
