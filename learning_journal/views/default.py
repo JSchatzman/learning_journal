@@ -56,7 +56,7 @@ def update_view(request):
         return HTTPFound(location=request.route_url('home'))
 
 
-@view_config(route_name='login',renderer='../templates/login.jinja2', permission=NO_PERMISSION_REQUIRED)
+@view_config(route_name='login',renderer='/templates/login.jinja2', permission=NO_PERMISSION_REQUIRED)
 def login_view(request):
     if request.POST:
         username = request.POST['username']
