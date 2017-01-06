@@ -13,11 +13,20 @@ THIS_DIR = os.path.dirname(__file__)
 @view_config(route_name='home', renderer='templates/index.jinja2', require_csrf=False)
 def home_view(request):
     """Home view handler."""
-    entries = request.dbsession.query(Entry).order_by(-Entry.id).all()
-    entry_list = []
-    for entry in entries:
-        entry_list.append(entry)
-    return {'entries': entry_list}
+    if request.method == 'GET':
+        entries = request.dbsession.query(Entry).order_by(-Entry.id).all()
+        entry_list = []
+        for entry in entries:
+            entry_list.append(entry)
+        return {'entries': entry_list}
+    if request.method == "POST":
+        today = Date.today()
+        title = request.POST['title']
+        body = request.POST['body']
+        creation_date = "{}-{}-{}".format(today.year, today.month, today.day)
+        entry = Entry(title=title, body=body, creation_date=creation_date)
+        request.dbsession.add(entry)
+        return HTTPFound(location=request.route_url('home'))
 
 
 @view_config(route_name='detail', renderer='templates/detail.jinja2')

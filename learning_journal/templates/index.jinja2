@@ -4,8 +4,20 @@
 My Learning Journal
 {% endblock %}
 {% block body %}
-<h3>
-    <a href="journal/new-entry">Add New Entry</a>
+{% if request.authenticated_userid %}
+    <h4>New Journal Entry:</h4>
+    <form role="form" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ request.session.get_csrf_token() }}" />
+        <div class="form-group">
+            <p>Title</p>
+            <input class="form-control" name="title"></input>
+            <br>
+            <p>Body<p>
+            <textarea class="form-control" name="body" rows="10"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+{% endif %}
 {% if entries %}
     {% for entry in entries %}
         <h2>
