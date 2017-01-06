@@ -32,4 +32,10 @@ My Learning Journal
 {% else %}
     <p>This journal is empty</p>
 {% endif %}
+<script type="text/javascript" src="../static/app.js"></script>
+{% endblock %}
+{% block javascript %}
+    <script>console.log('hello');</script>
+<script type="text/javascript" src="{{ request.static_url('../static/app.js') }}"></script>
+
 {% endblock %}
