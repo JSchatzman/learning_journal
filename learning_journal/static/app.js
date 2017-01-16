@@ -28,9 +28,6 @@ $(document).ready(function() {
                 $('#list').prepend(new_html);
                 console.log(new_html);
             },
-            error: function(err){
-               console.error(err);
-               alert("There was a problem", err.message);
 
         });
     });
