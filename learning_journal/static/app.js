@@ -16,7 +16,7 @@ $(document).ready(function() {
             },
             success: function(){
                 var href = $('h2 a').attr('href').split('/').slice(1);
-                new_id = href[3];
+                new_id = Number(href[3]) + 1;
                 console.log(href);
                 var new_html = '<h2>';
                 new_html += ' <a href ="' + '/journal/' + new_id + '">' + title + '</a>';
@@ -26,6 +26,7 @@ $(document).ready(function() {
                 new_html += ' <p class = "lead">by Jordan Schatzman</p>';
                 new_html += ' <p>Posted on today blah</p>';
                 new_html += ' <br/>';
+                $('#list').prepend(new_html);
                 console.log(new_html);
             },
             // error: function(err){

@@ -19,6 +19,7 @@ My Learning Journal
     </form>
 {% endif %}
 {% if entries %}
+<div id="list">
     {% for entry in entries %}
         <h2>
             <a href = "{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
@@ -29,6 +30,7 @@ My Learning Journal
         <p>Posted on {{entry.creation_date}}</p>
         <br/>
     {% endfor %}
+</div>
 {% else %}
     <p>This journal is empty</p>
 {% endif %}
