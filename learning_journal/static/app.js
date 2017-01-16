@@ -16,15 +16,17 @@ $(document).ready(function() {
             },
             success: function(){
                 var href = $('h2 a').attr('href').split('/').slice(1);
+                new_id = href[3];
                 console.log(href);
                 var new_html = '<h2>';
-                new_html += ' <a href =' + '{{ request.route_url("detail", id=entry.id) }}>' + '{{ ' + title + ' }}</a>';
+                new_html += ' <a href ="' + '/journal/' + new_id + '">' + title + '</a>';
                 new_html += ' </h2>';
                 new_html += ' <h3>';
                 new_html += ' </h3>';
                 new_html += ' <p class = "lead">by Jordan Schatzman</p>';
                 new_html += ' <p>Posted on today blah</p>';
                 new_html += ' <br/>';
+                console.log(new_html);
             },
             // error: function(err){
             //    console.error(err);
