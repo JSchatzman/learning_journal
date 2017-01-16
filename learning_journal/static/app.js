@@ -1,7 +1,5 @@
 $(document).ready(function() {
     console.log('first hello');
-    // var new_post = $(".submit");
-    // $(".submit").unbind("click");
     $(".submit").on("click", function(e) {
         console.log('hello');
         var title = $(this).parent().find("input[name='title']")[0].value;
@@ -16,6 +14,7 @@ $(document).ready(function() {
             },
             success: function(){
                 var href = $('h2 a').attr('href').split('/').slice(1);
+                var d = new Date().toISOString().slice(0,10);
                 new_id = Number(href[3]) + 1;
                 console.log(href);
                 var new_html = '<h2>';
@@ -24,7 +23,7 @@ $(document).ready(function() {
                 new_html += ' <h3>';
                 new_html += ' </h3>';
                 new_html += ' <p class = "lead">by Jordan Schatzman</p>';
-                new_html += ' <p>Posted on today blah</p>';
+                new_html += ' <p>Posted on ' + d + '</p>';
                 new_html += ' <br/>';
                 $('#list').prepend(new_html);
                 console.log(new_html);
