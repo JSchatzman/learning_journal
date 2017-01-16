@@ -28,23 +28,12 @@ $(document).ready(function() {
                 $('#list').prepend(new_html);
                 console.log(new_html);
             },
-            // error: function(err){
-            //    console.error(err);
-            //    alert("This is a problem", err.message);
+            error: function(err){
+               console.error(err);
+               alert("There was a problem", err.message);
 
         });
     });
 
 }
 );
-
-
-
-        // <h2>
-        //     <a href = "{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
-        // </h2>
-        // <h3>
-        // </h3>  
-        // <p class = "lead">by Jordan Schatzman</p>
-        // <p>Posted on {{entry.creation_date}}</p>
-        // <br/>

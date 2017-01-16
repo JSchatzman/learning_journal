@@ -25,14 +25,19 @@ My Learning Journal
             <a href = "{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
         </h2>
         <h3>
-        </h3>  
-        <p class = "lead">by Jordan Schatzman</p>
-        <p>Posted on {{entry.creation_date}}</p>
-        <br/>
+            <a class="twitter-share-button"
+                href="https://twitter.com/intent/tweet"
+                data-size="large"
+                data-text="{{ entry.title }}: {{ entry.body | truncate(20) }}""
+                data-hashtags="JordanBlog"
+                data_url="{{ request.route_url('detail', id=entry.id) }}">
+                Click Here to Tweet!
+            </a>
     {% endfor %}
 </div>
 {% else %}
     <p>This journal is empty</p>
 {% endif %}
 <script type="text/javascript" src="../static/app.js"></script>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 {% endblock %}
