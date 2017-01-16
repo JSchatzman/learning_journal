@@ -4,20 +4,40 @@
 My Learning Journal
 {% endblock %}
 {% block body %}
-<h3>
-    <a href="journal/new-entry">Add New Entry</a>
+{% if request.authenticated_userid %}
+    <h4>New Journal Entry:</h4>
+    <form role="form" method="POST">
+        <input type="hidden" name="csrf_token" value="{{ request.session.get_csrf_token() }}" />
+        <div class="form-group">
+            <p>Title</p>
+            <input class="form-control" name="title"></input>
+            <br>
+            <p>Body<p>
+            <textarea class="form-control" name="body" rows="10"></textarea>
+        </div>
+        <div class="submit btn btn-primary">Submit</div>
+    </form>
+{% endif %}
 {% if entries %}
+<div id="list">
     {% for entry in entries %}
         <h2>
             <a href = "{{ request.route_url('detail', id=entry.id) }}">{{ entry.title }}</a>
         </h2>
         <h3>
-        </h3>  
-        <p class = "lead">by Jordan Schatzman</p>
-        <p>Posted on {{entry.creation_date}}</p>
-        <br/>
+            <a class="twitter-share-button"
+                href="https://twitter.com/intent/tweet"
+                data-size="large"
+                data-text="{{ entry.title }}: {{ entry.body | truncate(20) }}""
+                data-hashtags="JordanBlog"
+                data_url="{{ request.route_url('detail', id=entry.id) }}">
+                Click Here to Tweet!
+            </a>
     {% endfor %}
+</div>
 {% else %}
     <p>This journal is empty</p>
 {% endif %}
+<script type="text/javascript" src="../static/app.js"></script>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 {% endblock %}

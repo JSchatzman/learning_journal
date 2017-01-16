@@ -5,6 +5,8 @@
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <script type="text/javascript">console.log('hello');</script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Jordan Schatzman Learning Blog">
     <meta name="author" content="Jordan Schatzman">
@@ -19,6 +21,13 @@
                     <a href="/">Home</a>
                     <br>
                     Learning Blog
+                    <h3>
+                        {% if request.authenticated_userid == "jordan" %}
+                            <a href="/logout">Log Out</a>
+                        {% else %}
+                         <a href="/login">Log In</a>
+                        {% endif %}
+                    </h3>
                 </h1>
                 {% block body %}{% endblock %}
             </div>

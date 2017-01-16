@@ -4,17 +4,16 @@
         Edit Entry
     {% endblock %}
     {% block body %}
-    <input type="hidden" name="csrf_token" value="{{ request.session.get_csrf_token() }}" />
     <div class="well">
-        <h4>New Journal Entry:</h4>
+        <h4>Login:</h4>
         <form role="form" method="POST">
             <input type="hidden" name="csrf_token" value="{{ request.session.get_csrf_token() }}" />
             <div class="form-group">
-                <p>Title</p>
-                <input class="form-control" name="title"></input>
+                <p>UserName:</p>
+                <input class="form-control" name="username"></input>
                 <br>
-                <p>Body<p>
-                <textarea class="form-control" name="body" rows="10"></textarea>
+                <p>Password<p>
+                <textarea class="form-control" name="password" rows="10"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
